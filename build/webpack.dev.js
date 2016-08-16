@@ -30,3 +30,11 @@ new WebpackDevServer(webpack(config), {
 }).listen(PORT, HOST, function() {
   console.log(localPublicPath);
 });
+
+// 开启热替换相关设置
+if (hot === true) {
+  config.entry.app.unshift('webpack/hot/only-dev-server');
+  // 注意这里 loaders[0] 是处理 .js 文件的 loader
+  config.module.loaders[0].loaders.unshift('react-hot');
+  config.plugins.push(new webpack.HotModuleReplacementPlugin());
+}

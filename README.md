@@ -1,4 +1,7 @@
-# Getting start
+
+## Webpack-React-Redux-ES6-Boilerplate Environment
+
+## Getting start
 
   1. Clone repo:
   ```
