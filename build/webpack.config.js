@@ -1,5 +1,7 @@
 var webpack = require('webpack');
 var HtmlwebpackPlugin = require('html-webpack-plugin');
+var precss = require('precss');
+var autoprefixer = require('autoprefixer');
 
 // 辅助工具
 var utils = require('./utils');
@@ -42,7 +44,7 @@ alias = Object.assign(alias, pickFiles({
 var config = {
   context: SRC_PATH,
   entry: {
-    app: ['./pages/app.js']
+    app: ['./app.js']
   },
   output: {
     path: DIST_PATH,
@@ -55,12 +57,12 @@ var config = {
   plugins: [
     new webpack.DefinePlugin({
       // http://stackoverflow.com/questions/30030031/passing-environment-dependent-variables-in-webpack
-      "process.env.NODE_ENV": JSON.stringfy(process.env.NODE_ENV || 'development')
+      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || 'development')
     }),
     new HtmlwebpackPlugin({
       filename: 'index.html',
       chunks: ['app'],
-      template: SRC_PATH + '/pages/app.html'
+      template: SRC_PATH + '/index.html'
     }),
     new webpack.optimize.CommonsChunkPlugin('lib', 'js/common.js')
   ]
@@ -79,15 +81,23 @@ config.module.loaders.push({
   // 这里使用 loaders ，因为后面还需要添加 loader
   loaders: ['babel?cacheDirectory=' + CACHE_PATH]
 });
+
 // 编译 sass
 config.module.loaders.push({
   test: /\.(scss|css)$/,
-  loaders: ['style', 'css', 'sass']
+  loaders: ['style', 'css', 'sass', 'postcss']
 });
+
+// css autoprefix
+config.postcss = function() {
+  return [precss, autoprefix];
+};
+
 config.entry.lib = [
   'react', 'react-dom', 'react-router',
   'redux', 'react-redux', 'redux-thunk'
 ];
+
 config.output.filename = 'js/[name].js';
 
 module.exports = config;

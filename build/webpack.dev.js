@@ -1,3 +1,15 @@
+/**
+ * node webpack.dev.js
+ *        --hot         开启热更新
+ *        --uglify      压缩
+ *        --deploy      发布到测试环境，只发送 html 页面到服务器，js, css, img 等静态资源还是使用本地的，
+ *        这样就可以在访问测试机时也可以照常使用热替换、自动刷新功能。
+ *
+ * NODE_ENV=development node build/webpack.dev.js --hot
+ * NODE_ENV=development node build/webpack.dev.js --hot --deploy
+ * NODE_ENV=production node build/webpack.dev.js --uglify
+ */
+
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
 var config = require('./webpack.config.js');
@@ -15,6 +27,14 @@ var localPublicPath = 'http://' + HOST + ':' + PORT + '/';
 config.output.publicPath = localPublicPath;
 config.entry.app.unshift('webpack-dev-server/client?' + localPublicPath);
 
+// 开启热替换相关设置
+if (hot === true) {
+  config.entry.app.unshift('webpack/hot/only-dev-server');
+  // 注意这里 loaders[0] 是处理 .js 文件的 loader
+  config.module.loaders[0].loaders.unshift('react-hot');
+  config.plugins.push(new webpack.HotModuleReplacementPlugin());
+}
+
 new WebpackDevServer(webpack(config), {
   hot: hot,
   inline: true,
@@ -30,11 +50,3 @@ new WebpackDevServer(webpack(config), {
 }).listen(PORT, HOST, function() {
   console.log(localPublicPath);
 });
-
-// 开启热替换相关设置
-if (hot === true) {
-  config.entry.app.unshift('webpack/hot/only-dev-server');
-  // 注意这里 loaders[0] 是处理 .js 文件的 loader
-  config.module.loaders[0].loaders.unshift('react-hot');
-  config.plugins.push(new webpack.HotModuleReplacementPlugin());
-}
