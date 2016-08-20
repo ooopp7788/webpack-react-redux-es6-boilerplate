@@ -1,6 +1,8 @@
 var webpack = require('webpack');
-var HtmlwebpackPlugin = require('html-webpack-plugin');
 var precss = require('precss');
+var HtmlwebpackPlugin = require('html-webpack-plugin');
+var HashedModuleIdsPlugin = require('./HashedModuleIdsPlugin');
+var WebpackMd5Hash = require('webpack-md5-hash');
 var autoprefixer = require('autoprefixer');
 
 // 辅助工具
@@ -18,6 +20,9 @@ var DIST_PATH = ROOT_PATH + '/dist';
 // 是否是开发环境
 var __DEV__ = process.env.NODE_ENV !== 'production';
 
+var args = process.argv;
+var uglify = args.indexOf('--uglify') > -1;
+
 // conf
 var alias = pickFiles({
   id: /(conf\/[^\/]+).js$/,
@@ -25,10 +30,10 @@ var alias = pickFiles({
 });
 
 // components
-alias = Object.assign(alias, pickFiles({
-  id: /(components\/[^\/]+)/,
-  pattern: SRC_PATH + '/components/*/index.js'
-}));
+// alias = Object.assign(alias, pickFiles({
+//   id: /(components\/[^\/]+)/,
+//   pattern: SRC_PATH + '/components/*/index.js'
+// }));
 
 // reducers
 // alias = Object.assign(alias, pickFiles({
@@ -44,14 +49,22 @@ alias = Object.assign(alias, pickFiles({
 var config = {
   context: SRC_PATH,
   entry: {
-    app: ['./app.js']
+    app: ['./app.js'],
+    lib: [
+      'react', 'react-dom', 'react-router',
+      'redux', 'react-redux', 'redux-thunk'
+    ]
   },
   output: {
     path: DIST_PATH,
-    filename: 'js/bundle.js'
+    // chunkhash 不能与 --hot 同时使用
+    // see https://github.com/webpack/webpack-dev-server/issues/377
+    filename: __DEV__ ? 'js/[name].js' : 'js/[name].[chunkhash].js',
+    chunkFilename: __DEV__ ? 'js/[name].js' : 'js/[name].[chunkhash].js'
   },
   module: {},
   resolve: {
+    root: SRC_PATH,
     alias: alias
   },
   plugins: [
@@ -59,17 +72,20 @@ var config = {
       // http://stackoverflow.com/questions/30030031/passing-environment-dependent-variables-in-webpack
       "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || 'development')
     }),
-    new HtmlwebpackPlugin({
-      filename: 'index.html',
-      chunks: ['app'],
-      template: SRC_PATH + '/index.html'
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ['lib', 'manifest']
     }),
-    new webpack.optimize.CommonsChunkPlugin('lib', 'js/common.js')
+    // 使用文件名替换数字作为模块ID
+    // new webpack.NamedModulesPlugin(),
+    // 使用 hash 作模块 ID，文件名作ID太长了，文件大小剧增
+    new HashedModuleIdsPlugin(),
+    // 根据文件内容生成 hash
+    new WebpackMd5Hash()
   ]
 }
 
 // 使用缓存
-var CACHE_PATH = ROOT_PATH;
+var CACHE_PATH = ROOT_PATH + '/cache';
 // loaders
 config.module.loaders = [];
 
@@ -83,20 +99,96 @@ config.module.loaders.push({
 });
 
 // 编译 sass
-config.module.loaders.push({
-  test: /\.(scss|css)$/,
-  loaders: ['style', 'css', 'sass', 'postcss']
-});
+if(__DEV__) {
+  config.module.loaders.push({
+    test: /\.(scss|css)$/,
+    loaders: ['style', 'css', 'postcss', 'sass']
+  });
+}else {
+  config.module.loaders.push({
+    test: /\.(scss|css)$/,
+    loaders: ExtractTextPlugin.extract('style', 'css!postcss!sass')
+  });
+  config.plugins.push(
+    new ExtractTextPlugin('css/[name].[contenthash].css')
+  )
+}
 
 // css autoprefix
 config.postcss = function() {
   return [precss, autoprefix];
 };
 
-config.entry.lib = [
-  'react', 'react-dom', 'react-router',
-  'redux', 'react-redux', 'redux-thunk'
-];
+// 图片路径处理，压缩
+config.module.loaders.push({
+  test: /\.(?:jpg|gif|png|svg)$/,
+  loaders: [
+    'url?limit=8000&name=img/[hash].[ext]',
+    'image-webpack'
+  ]
+});
+
+// 压缩 js, css
+if (uglify) {
+  config.plugins.push(
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      },
+      output: {
+        comments: false
+      }
+    })
+  );
+}
+
+// 去掉重复模块
+if(!__DEV__) {
+  config.plugins.push(
+    new webpack.optimize.DedupePlugin()
+  )
+}
+
+// html 页面
+var HtmlwebpackPlugin = require('html-webpack-plugin');
+config.plugins.push(
+  new HtmlwebpackPlugin({
+    filename: 'index.html',
+    chunks: ['app', 'lib'],
+    template: SRC_PATH + '/index.html',
+    minify: __DEV__ ? false : {
+      collapseWhitespace: true,
+      collapseInlineTagWhitespace: true,
+      removeRedundantAttributes: true,
+      removeEmptyAttributes: true,
+      removeScriptTypeAttributes: true,
+      removeStyleLinkTypeAttributes: true,
+      removeComments: true
+    }
+  })
+);
+
+// 内嵌 manifest 到 html 页面
+config.plugins.push(function() {
+  this.plugin('compilation', function(compilation) {
+    compilation.plugin('html-webpack-plugin-after-emit', function(file, callback) {
+      var manifest = '';
+      Object.keys(compilation.assets).forEach(function(filename) {
+        if (/\/?manifest.[^\/]*js$/.test(filename)) {
+          manifest = '<script>' + compilation.assets[filename].source() + '</script>';
+        }
+      });
+      if (manifest) {
+        var htmlSource = file.html.source();
+        htmlSource = htmlSource.replace(/(<\/head>)/, manifest + '$1');
+        file.html.source = function() {
+          return htmlSource;
+        };
+      }
+      callback(null, file);
+    });
+  });
+});
 
 config.output.filename = 'js/[name].js';
 

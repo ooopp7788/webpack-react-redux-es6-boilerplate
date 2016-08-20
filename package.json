@@ -18,7 +18,7 @@
     "deploy:online": "NODE_ENV=production node build/webpack.release.js --uglify --deploy=online"
   },
   "author": "chacha",
-  "license": "ISC",
+  "license": "MIT",
   "keywords": [
     "webpack",
     "react",

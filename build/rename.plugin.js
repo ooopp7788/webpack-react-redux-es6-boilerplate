@@ -2,9 +2,7 @@ var fs = require('fs');
 var md5 = require('md5');
 var path = require('path');
 
-function RenamePlugin() {
-
-}
+function RenamePlugin() {}
 
 RenamePlugin.prototype.apply = function(compiler) {
   compiler.plugin('done', function(stats) {
