@@ -7,12 +7,16 @@
     <meta content="yes" name="apple-touch-fullscreen">
     <meta content="telephone=no,email=no" name="format-detection">
     <meta name="App-Config" content="fullscreen=yes,useHistoryState=yes,transition=yes">
-    <title>Webpack-React-Redux-ES6-Boilerplate dev environment</title>
-    <link rel="shortcut icon" href="favicon.ico">
+    <title>Webpack-React-Redux-ES6-Boilerplate prod environment</title>
+    <link rel="shortcut icon" href="/pc/favicon.ico">
     <link href="<%= htmlWebpackPlugin.files.chunks.app.css[0] %>" rel="stylesheet">
   </head>
   <body>
     <div id="app"></div>
+    <script src="<%= htmlWebpackPlugin.files.chunks.common.entry %>"></script>
+    <script src="<%= htmlWebpackPlugin.files.chunks.react.entry %>"></script>
+    <script src="<%= htmlWebpackPlugin.files.chunks.lodash.entry %>"></script>
+    <script src="<%= htmlWebpackPlugin.files.chunks.vendor.entry %>"></script>
     <script src="<%= htmlWebpackPlugin.files.chunks.app.entry %>"></script>
   </body>
 </html>
