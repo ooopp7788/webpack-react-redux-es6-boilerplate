@@ -1,0 +1,16 @@
+body {
+  text-align: center;
+}
+.redux-counter {
+  margin: 100px;
+  text-align: center;
+}
+button {
+  display: inline-block;
+  padding: 5px 10px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  margin: 0 10px;
+  background-color: #f2f2f2;
+}
