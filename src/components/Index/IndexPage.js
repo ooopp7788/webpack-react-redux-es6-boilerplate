@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import './style.css';
+import './style.scss';
 
 import * as counterActions from 'actions/counterActions';
 
@@ -16,7 +16,7 @@ export default class IndexPage extends Component {
   render() {
     const { counter, inc, dec } = this.props;
 
-    console.log(inc, dec);
+    // console.log(inc, dec);
 
     return (
       <div>

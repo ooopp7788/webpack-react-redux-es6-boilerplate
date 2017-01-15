@@ -31,8 +31,8 @@ module.exports = {
       loaders: ['babel'],
       exclude: /node_modules/,
     }, {
-      test: /\.css$/,
-      loaders: ['style', 'css'],
+      test: /\.scss$/,
+      loaders: ['style', 'css', 'sass'],
       include: /components/,
     }, {
       test: /\.(jpe?g|png|gif|svg|ico)/i,
