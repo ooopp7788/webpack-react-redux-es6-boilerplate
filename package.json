@@ -58,7 +58,7 @@
     "webpack-hot-middleware": "^2.13.1"
   },
   "dependencies": {
-    "bluebird": "^3.4.7",
+    "axios": "^0.15.3",
     "lodash": "^4.16.6",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
@@ -67,7 +67,6 @@
     "react-router-redux": "^4.0.7",
     "redux": "3.6.0",
     "redux-logger": "^2.7.4",
-    "redux-thunk": "^2.1.0",
-    "superagent": "^3.3.2"
+    "redux-thunk": "^2.1.0"
   }
 }

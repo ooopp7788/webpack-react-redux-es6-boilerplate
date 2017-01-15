@@ -17,7 +17,7 @@ export default class IndexPage extends Component {
     const { counter, inc, dec } = this.props;
 
     console.log(inc, dec);
-    
+
     return (
       <div>
         <h1>Webpack-React-Redux-ES6-Boilerplate Dev Environment</h1>
