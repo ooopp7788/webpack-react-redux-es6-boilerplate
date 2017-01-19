@@ -25,15 +25,18 @@ export default class IndexPage extends Component {
     const { counter, inc, dec } = this.props;
     const d = 'M0,0 L320,0 320,160' + 'Q' + this.state.c.x + ',' + this.state.c.y + ' 0,160';
 
+    console.log(counter);
+
     return (
       <div>
         <h3 className="title">Webpack-React-Redux-ES6-Boilerplate <br/> Dev Environment</h3>
         <div className="draggable-header-view">
           <svg className="bg" width="320" height="560">
-            <path d={{d}} style={{fill: '#3F51B5'}}></path>
+            <path d={d} style={{fill: '#3F51B5'}}></path>
           </svg>
           <div className="header">
             <h1>Elastic Draggable SVG Header</h1>
+            <p>with <a href="https://facebook.github.io/react/" target="_blank">react.js</a></p>
           </div>
           <div className="content">
             <p>
