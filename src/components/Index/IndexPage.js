@@ -20,7 +20,7 @@ export default class IndexPage extends Component {
 
     return (
       <div>
-        <h1>Webpack-React-Redux-ES6-Boilerplate Dev Environment</h1>
+        <h3>Webpack-React-Redux-ES6-Boilerplate <br/> Dev Environment</h3>
         <div className="redux-counter">
           <h2>Redux Counter</h2>
           <button onClick={() => dec()}>-</button>
