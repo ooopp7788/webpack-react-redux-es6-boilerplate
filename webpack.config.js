@@ -32,7 +32,7 @@ module.exports = {
       exclude: /node_modules/,
     }, {
       test: /\.scss$/,
-      loaders: ['style', 'css', 'sass'],
+      loaders: ['style', 'css?importLoaders=1', 'sass', 'postcss'],
       include: /components/,
     }, {
       test: /\.(jpe?g|png|gif|svg|ico)/i,
@@ -51,4 +51,10 @@ module.exports = {
       loader: 'json',
     }],
   },
+  postcss: () => {
+    return [
+      require('precss'),
+      require('autoprefixer')
+    ];
+  }
 };
