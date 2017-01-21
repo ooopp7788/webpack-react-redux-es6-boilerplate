@@ -31,6 +31,10 @@ module.exports = {
       loaders: ['babel'],
       exclude: /node_modules/,
     }, {
+      test: /\.css$/,
+      loaders: ['style', 'css?importLoaders=1', 'postcss'],
+      include: /components/,
+    }, {
       test: /\.scss$/,
       loaders: ['style', 'css?importLoaders=1', 'sass', 'postcss'],
       include: /components/,
