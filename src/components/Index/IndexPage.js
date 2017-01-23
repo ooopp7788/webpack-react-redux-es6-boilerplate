@@ -24,14 +24,13 @@ export default class IndexPage extends Component {
 
   startDrag = (e) => {
     e = e.changeTouches ? e.changeTouches[0] : e;
-    console.log(e);
     this.setState({
       dragging: true,
       start: { x: e.pageX, y: e.pageY },
     });
   }
 
-  onDrag = (e) => {
+  _onDrag = (e) => {
     e = e.changeTouches ? e.changeTouches[0] : e;
     const dx = e.pageX - this.state.start.x;
     const dy = e.pageY - this.state.start.y;
@@ -50,7 +49,7 @@ export default class IndexPage extends Component {
   stopDrag = (e) => {
     if (this.state.dragging) {
       this.setState({
-        dragging: true,
+        dragging: false,
       });
       dynamics.animate(this.state.c, {
         x: 160,
@@ -73,11 +72,11 @@ export default class IndexPage extends Component {
     return (
       <div>
         <h3 className="title">Webpack-React-Redux-ES6-Boilerplate <br/> Dev Environment</h3>
-        <div className="draggable-header-view">
-          <svg className="bg" width="320" height="560"
-            onMouseDown={this.startDrag} onTouchStart={this.startDrag}
-            onDrag={this.onDrag} onTouchMove={this.onDrag}
-            onMouseUp={this.stopDrag} onTouchEnd={this.stopDrag} onMouseLeave={this.stopDrag}>
+        <div className="draggable-header-view"
+          onMouseDown={this.startDrag} onTouchStart={this.startDrag}
+          onMouseMove={this._onDrag} onTouchMove={this._onDrag}
+          onMouseUp={this.stopDrag} onTouchEnd={this.stopDrag} onMouseLeave={this.stopDrag}>
+          <svg className="bg" width="320" height="560">
             <path d={d} style={{fill: '#2196F3'}}></path>
           </svg>
           <div className="header">
