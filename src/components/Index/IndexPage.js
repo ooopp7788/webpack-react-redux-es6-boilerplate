@@ -12,7 +12,7 @@ import * as counterActions from 'actions/counterActions';
   ),
   { ...counterActions }
 )
-export default class IndexPage extends Component {
+class IndexPage extends Component {
 
   state = {
     dragging: false,
@@ -30,7 +30,7 @@ export default class IndexPage extends Component {
     });
   }
 
-  _onDrag = (e) => {
+  onDrag = (e) => {
     e = e.changeTouches ? e.changeTouches[0] : e;
     const dx = e.pageX - this.state.start.x;
     const dy = e.pageY - this.state.start.y;
@@ -74,7 +74,7 @@ export default class IndexPage extends Component {
         <h3 className="title">Webpack-React-Redux-ES6-Boilerplate <br/> Dev Environment</h3>
         <div className="draggable-header-view"
           onMouseDown={this.startDrag} onTouchStart={this.startDrag}
-          onMouseMove={this._onDrag} onTouchMove={this._onDrag}
+          onMouseMove={this.onDrag} onTouchMove={this.onDrag}
           onMouseUp={this.stopDrag} onTouchEnd={this.stopDrag} onMouseLeave={this.stopDrag}>
           <svg className="bg" width="320" height="560">
             <path d={d} style={{fill: '#2196F3'}}></path>
@@ -96,9 +96,14 @@ export default class IndexPage extends Component {
               aliquet nec, vulputate eget, arcu. In enim justo,
               rhoncus ut, imperdiet a, venenatis vitae, justo.
             </p>
+            <button onClick={() => dec()}>-</button>
+            <span>{counter}</span>
+            <button onClick={() => inc()}>+</button>
           </div>
         </div>
       </div>
     )
   }
 }
+
+export default IndexPage;
