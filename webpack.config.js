@@ -60,19 +60,16 @@ module.exports = {
       include: /components/,
     }, {
       test: /\.(jpe?g|png|gif|svg|ico)/i,
-      use: 'file-loader?name=img_[hash:8].[ext]',
+      loader: 'file-loader?name=img_[hash:8].[ext]',
     }, {
       test: /\.(ttf|eot|woff|woff2)/,
-      use: 'file-loader',
+      loader: 'file-loader',
     }, {
       test: /\.(pdf)/,
-      use: 'file-loader',
+      loader: 'file-loader',
     }, {
       test: /\.(swf|xap)/,
-      use: 'file-loader',
-    },{
-      test: /\.json/,
-      use: 'json-loader',
+      loader: 'file-loader',
     }],
   },
 };

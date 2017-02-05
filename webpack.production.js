@@ -10,7 +10,10 @@ module.exports = merge(webpackConfig, {
   module: {
     rules: [{
       test: /\.css$/,
-      use: ExtractTextPlugin.extract('style-loader', 'css-loader'),
+      use: ExtractTextPlugin.extract({
+        fallbackLoader: "style-loader",
+        loader: "css-loader",
+      }),
       exclude: /components/,
     }],
   },
