@@ -96,9 +96,12 @@ class IndexPage extends Component {
               aliquet nec, vulputate eget, arcu. In enim justo,
               rhoncus ut, imperdiet a, venenatis vitae, justo.
             </p>
-            <button onClick={() => dec()}>-</button>
-            <span>{counter}</span>
-            <button onClick={() => inc()}>+</button>
+            <div className="redux-example">
+              <h4>Redux Example</h4>
+              <button onClick={() => dec()}>-</button>
+              <span>{counter}</span>
+              <button onClick={() => inc()}>+</button>
+            </div>
           </div>
         </div>
       </div>

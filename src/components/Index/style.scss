@@ -26,7 +26,7 @@ a {
   font-family: 'Roboto', Helvetica, Arial, sans-serif;
   color: #fff;
   font-size: 14px;
-  font-weight: 300;
+  font-weight: normal;
   user-select: none;
   .bg {
     position: absolute;
@@ -48,5 +48,30 @@ a {
   .content {
     color: #333;
     line-height: 1.5em;
+  }
+  .redux-example {
+    font-size: 20px;
+    color: #777;
+    text-align: center;
+    h4 {
+      margin: 0;
+    }
+    button {
+      width: 44px;
+      height: 44px;
+      border: none;
+      color: #aaa;
+      font-size: 28px;
+      background-color: #eee;
+      border-radius: 50%;
+      outline: none;
+      font-weight: 200;
+      margin: 10px 20px;
+      transition: all .25s ease-in;
+      &:hover {
+        color: #fff;
+        background-color: #2196F3;
+      }
+    }
   }
 }
