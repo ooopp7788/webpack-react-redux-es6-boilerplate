@@ -18,13 +18,13 @@ module.exports = merge(webpackConfig, {
   module: {
     rules: [{
       test: /\.css$/,
-      use: ['style', 'css'],
+      use: ['style-loader', 'css-loader'],
       exclude: /components/,
     }],
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
     }),

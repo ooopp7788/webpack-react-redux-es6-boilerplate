@@ -18,24 +18,24 @@ module.exports = {
     ]
   },
   resolve: {
-    root: [
+    modules: [
       __dirname + '/src',
       __dirname + '/node_modules',
       __dirname,
     ],
-    extensions: ['', '.js'],
+    extensions: ['.js'],
   },
   module: {
     rules: [{
       test: /\.js$/,
-      use: ['babel'],
+      loader: 'babel-loader',
       exclude: /node_modules/,
     }, {
       test: /\.css$/,
-      use: ['style', 'css?importLoaders=1', {
-        loader: 'postcss',
+      use: ['style-loader', 'css-loader?importLoaders=1', {
+        loader: 'postcss-loader',
         options: {
-          plugings: () => {
+          plugins: () => {
             return [
               require('precss'),
               require('autoprefixer')
@@ -46,10 +46,10 @@ module.exports = {
       include: /components/,
     }, {
       test: /\.scss$/,
-      use: ['style', 'css?importLoaders=1', 'sass', {
-        loader: 'postcss',
+      use: ['style-loader', 'css-loader?importLoaders=1', 'sass-loader', {
+        loader: 'postcss-loader',
         options: {
-          plugings: () => {
+          plugins: () => {
             return [
               require('precss'),
               require('autoprefixer')
@@ -60,19 +60,19 @@ module.exports = {
       include: /components/,
     }, {
       test: /\.(jpe?g|png|gif|svg|ico)/i,
-      use: 'file?name=img_[hash:8].[ext]',
+      use: 'file-loader?name=img_[hash:8].[ext]',
     }, {
       test: /\.(ttf|eot|woff|woff2)/,
-      use: 'file',
+      use: 'file-loader',
     }, {
       test: /\.(pdf)/,
-      use: 'file',
+      use: 'file-loader',
     }, {
       test: /\.(swf|xap)/,
-      use: 'file',
+      use: 'file-loader',
     },{
       test: /\.json/,
-      use: 'json',
+      use: 'json-loader',
     }],
   },
 };
