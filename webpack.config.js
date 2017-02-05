@@ -26,39 +26,53 @@ module.exports = {
     extensions: ['', '.js'],
   },
   module: {
-    loaders: [{
+    rules: [{
       test: /\.js$/,
-      loaders: ['babel'],
+      use: ['babel'],
       exclude: /node_modules/,
     }, {
       test: /\.css$/,
-      loaders: ['style', 'css?importLoaders=1', 'postcss'],
+      use: ['style', 'css?importLoaders=1', {
+        loader: 'postcss',
+        options: {
+          plugings: () => {
+            return [
+              require('precss'),
+              require('autoprefixer')
+            ];
+          }
+        },
+      }],
       include: /components/,
     }, {
       test: /\.scss$/,
-      loaders: ['style', 'css?importLoaders=1', 'sass', 'postcss'],
+      use: ['style', 'css?importLoaders=1', 'sass', {
+        loader: 'postcss',
+        options: {
+          plugings: () => {
+            return [
+              require('precss'),
+              require('autoprefixer')
+            ];
+          }
+        },
+      }],
       include: /components/,
     }, {
       test: /\.(jpe?g|png|gif|svg|ico)/i,
-      loader: 'file?name=img_[hash:8].[ext]',
+      use: 'file?name=img_[hash:8].[ext]',
     }, {
       test: /\.(ttf|eot|woff|woff2)/,
-      loader: 'file',
+      use: 'file',
     }, {
       test: /\.(pdf)/,
-      loader: 'file',
+      use: 'file',
     }, {
       test: /\.(swf|xap)/,
-      loader: 'file',
+      use: 'file',
     },{
       test: /\.json/,
-      loader: 'json',
+      use: 'json',
     }],
   },
-  postcss: () => {
-    return [
-      require('precss'),
-      require('autoprefixer')
-    ];
-  }
 };

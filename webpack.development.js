@@ -7,7 +7,6 @@ process.env.NODE_ENV = 'development';
 
 module.exports = merge(webpackConfig, {
   devtool: 'eval',
-  debug: true,
   entry: {
     app: ['webpack-hot-middleware/client'],
   },
@@ -17,9 +16,9 @@ module.exports = merge(webpackConfig, {
     chunkFilename: '[name]_[chunkhash:8].js',
   },
   module: {
-    loaders: [{
+    rules: [{
       test: /\.css$/,
-      loaders: ['style', 'css'],
+      use: ['style', 'css'],
       exclude: /components/,
     }],
   },

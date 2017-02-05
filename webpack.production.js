@@ -8,9 +8,9 @@ process.env.NODE_ENV = 'production';
 
 module.exports = merge(webpackConfig, {
   module: {
-    loaders: [{
+    rules: [{
       test: /\.css$/,
-      loader: ExtractTextPlugin.extract('style-loader', 'css-loader'),
+      use: ExtractTextPlugin.extract('style-loader', 'css-loader'),
       exclude: /components/,
     }],
   },
