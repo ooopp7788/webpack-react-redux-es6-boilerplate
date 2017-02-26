@@ -3,6 +3,8 @@
 
 This is a react single page application quick start project, you can clone it and start your project quickly. It includes react, redux and react-router. If any problems, you can commit your issues on the github.
 
+[Screen Shot](http://7xqacx.com1.z0.glb.clouddn.com/Screen%20Shot%202017-02-20%20at%2021.06.24.png)
+
 ## Getting start
 
   1. Clone repo:
@@ -26,7 +28,7 @@ This is a react single page application quick start project, you can clone it an
   $ npm build
   ```
 
-  ## Project Structure
+## Project Structure
 
 ```
 .
