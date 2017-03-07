@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import thunk from 'redux-thunk';
+import createLogger from 'redux-logger';
 import { routerReducer } from 'react-router-redux';
 
 import * as reducers from '../reducers';
@@ -7,7 +8,7 @@ import * as reducers from '../reducers';
 let middlewares = [thunk];
 
 if (process.env.NODE_ENV === 'development') {
-  const logger = require('redux-logger');
+  const logger = createLogger();
   middlewares = [...middlewares, logger];
 }
 
