@@ -1,8 +1,8 @@
-import { COUNTER_INC, COUNTER_DEC } from 'actions/counterActions';
+import { COUNTER_INC, COUNTER_DEC } from 'actions/home';
 
 const initialState = 0;
 
-export default function counter(state = initialState, action) {
+export default (state = initialState, action) => {
 
   switch (action.type) {
     case COUNTER_INC:

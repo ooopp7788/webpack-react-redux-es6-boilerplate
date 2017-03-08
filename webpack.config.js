@@ -1,7 +1,7 @@
 
 module.exports = {
   entry: {
-    app: [__dirname + '/src/index'],
+    app: [__dirname + '/src/app'],
     vendor: [
       'redux',
       'react-redux',
@@ -45,8 +45,8 @@ module.exports = {
       }],
       include: /components/,
     }, {
-      test: /\.scss$/,
-      use: ['style-loader', 'css-loader?importLoaders=1', 'sass-loader', {
+      test: /\.less$/,
+      use: ['style-loader', 'css-loader?importLoaders=1', 'less-loader', {
         loader: 'postcss-loader',
         options: {
           plugins: () => {
@@ -56,8 +56,7 @@ module.exports = {
             ];
           }
         },
-      }],
-      include: /components/,
+      }]
     }, {
       test: /\.(jpe?g|png|gif|svg|ico)/i,
       loader: 'file-loader?name=img_[hash:8].[ext]',

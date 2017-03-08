@@ -1,1 +1,2 @@
-export {default as counter} from './counterReducer';
+export {default as home} from './home';
+
